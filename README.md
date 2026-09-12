@@ -5,6 +5,7 @@ CodeCrew is a web-based platform where like-minded coders can lookup interesting
 ## User Stories
 
 ## Entity-Relationship Diagram
+## Wireframes
 
 ## Express & Postman
 
