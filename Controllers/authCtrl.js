@@ -50,7 +50,7 @@ const signup = async (req, res) => {
             _id: user._id,
         };
         console.log(process.env.JWT_SECRET);
-        const token = jwt.sign({payload}, process.env.JWT_SECRET);
+        const token = jwt.sign(payload, process.env.JWT_SECRET);
 
         res.status(201).json({ user, token });
     } catch (err) {
@@ -80,7 +80,7 @@ const login = async (req, res) => {
             _id: userInDatabase._id
         }
 
-        const token = jwt.sign({payload}, process.env.JWT_SECRET)
+        const token = jwt.sign(payload, process.env.JWT_SECRET)
 
         res.status(200).json({ token })
 

@@ -21,6 +21,16 @@ app.use('/auth', authRouter)
 // only protected
 app.use(isSignedIn)
 
+app.get('/protected', (req, res) => {
+    try {
+        const userPayload = req.user;
+
+        res.status(200).json({ user: userPayload });
+    } catch (error) {
+        res.status(500).json({ err: 'Something went wrong' });
+    }
+});
+
 app.listen(3000, () => {
     console.log('The express app is ready!');
 });
