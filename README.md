@@ -3,9 +3,17 @@
 CodeCrew is a web-based platform where like-minded coders can lookup interesting projects that may require contributors or create a project idea and request members to help in bringing the project to life. This platform allows beginners to learn collaboration and trade skills with each other while also providing startup creatives to allow experienced developers provide help in the creation of their unique ideas.
 
 ## User Stories
+- As a signed-in user I must be able to accept/reject a join request made by another users
+- As a member of the team, I must be able to create, update, delete, and view tasks
 
+**future improvements**:
+- As a member of the team, I must be able to participate in group messages related to each project
+- As a member of the team, I must be able to receieve notifications once I am accepted to a project and prior to three days of a due date of any task
 ## Entity-Relationship Diagram
+![ERD](./public/images/projectManagement.drawio.png)
+
 ## Wireframes
+![prototyes](./public/images/initialPrototpye.png)
 
 ## Express & Postman
 
@@ -46,4 +54,5 @@ Below you can see a chart outlining the RESTful routes required for this applica
 
 ## Attibutions
 ## Technologies Used
+- Git,Github,Express.js,Node.js,React,Bootstrap,Postman(for testing purposes),MongoDB
 ## Next Steps
