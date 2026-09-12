@@ -4,6 +4,8 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const logger = require('morgan');
+const path = require('path');
+
 
 
 const authRouter = require('./Routes/authRouter');
@@ -11,6 +13,7 @@ const isSignedIn = require('./Middleware/isSignedIn');
 
 require('./config/database')
 
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 app.use(express.json());
 app.use(logger('dev'));
