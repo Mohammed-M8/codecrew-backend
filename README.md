@@ -42,8 +42,6 @@ Below you can see a chart outlining the RESTful routes required for this applica
 | GET         | getTask               | 200      | /tasks/:id                                 | Get a single task                  |
 | POST        | createTask            | 201      | /projects/:id/tasks                        | Create a task within a project     |
 | PUT         | updateTask            | 200      | /tasks/:id                                 | Update a task                      |
-| PATCH       | updateTaskStatus      | 200      | /tasks/:id/status                          | Update task status                 |
-| PATCH       | assignTask            | 200      | /tasks/:id/assign                          | Assign/unassign users to a task    |
 | DELETE      | deleteTask            | 200      | /tasks/:id                                 | Delete a task                      |
 
 ## Attibutions
