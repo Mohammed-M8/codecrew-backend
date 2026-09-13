@@ -1,7 +1,7 @@
 const Project = require('../Models/project')
 const isProjectOwner = async (req, res, next) => {
     try {
-        const project = await Project.findById(req.params.id)
+        const project = await Project.findById(req.params.projectId)
 
         if (!project) return res.status(404).json({ err: "Project not found" });
 

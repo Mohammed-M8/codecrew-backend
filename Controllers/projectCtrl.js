@@ -35,7 +35,7 @@ const index = async (req, res) => {
 
 const show = async (req, res) => {
     try {
-        const project = await Project.findById(req.params.id).populate(['owner', 'members'])
+        const project = await Project.findById(req.params.projectId).populate(['owner', 'members'])
         if (!project) return res.status(404).json({ err: "Project not found" })
         res.status(200).json(project)
     } catch (error) {
@@ -49,7 +49,7 @@ const update = async (req, res) => {
         const { title, description, technologies, requiredRoles, status } = req.body;
 
         const project = await Project.findByIdAndUpdate(
-            req.params.id,
+            req.params.projectId,
             { title, description, technologies, requiredRoles, status },
             { new: true, runValidators: true }
         );
@@ -63,7 +63,7 @@ const update = async (req, res) => {
 
 const deleteProject = async (req, res) => {
     try {
-        await Project.findByIdAndDelete(req.params.id)
+        await Project.findByIdAndDelete(req.params.projectId)
         res.status(204).json()
     } catch (error) {
         console.log(error)
@@ -73,7 +73,7 @@ const deleteProject = async (req, res) => {
 
 const getProjectMembers = async (req, res) => {
     try {
-        const project = await Project.findById(req.params.id).populate('members')
+        const project = await Project.findById(req.params.projectId).populate('members')
         if (!project) return res.status(404).json({ err: "Project not found" })
         const members = project.members;
         res.status(200).json(members)
