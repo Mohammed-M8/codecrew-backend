@@ -17,6 +17,10 @@ const index = async (req, res) => {
             .populate('project')
             .sort({ dueDate: 'desc' });
 
+        if (!task) {
+            res.status(404).json("this task doesn't exist");
+        }
+
         res.status(200).json(task);
     }
     catch (err) {
@@ -27,13 +31,16 @@ const show = async (req, res) => {
     try {
         const task = await Task.findById(req.params.taskId).populate('project');
 
+        if (!task) {
+            res.status(404).json("this task doesn't exist");
+        }
         res.status(200).json(task);
     }
     catch (err) {
         res.status(500).json(err.message);
     }
 }
-const updateTaskStatus = async (req, res) => {
+const updateTask = async (req, res) => {
     try {
 
         const updatedtask = await Task.findByIdAndUpdate(req.params.taskId,
@@ -47,7 +54,7 @@ const updateTaskStatus = async (req, res) => {
         res.status(500).json(err.message);
     }
 }
-const updateTask = async (req, res) => {
+const updateTaskStatus = async (req, res) => {
     try {
 
         const task = await Task.findBy(req.params.taskId);
