@@ -36,9 +36,12 @@ const show = async (req, res) => {
 const updateTask = async (req, res) => {
     try {
 
-        const task = await Task.findByIdAndUpdate(req.params.taskId);
+        const updatedtask = await Task.findByIdAndUpdate(req.params.taskId,
+            req.body,
+            { new: true }
+        );
 
-        res.status(200).json(task);
+        res.status(200).json(updatedtask);
     }
     catch (err) {
         res.status(500).json(err.message);
