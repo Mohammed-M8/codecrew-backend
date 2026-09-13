@@ -33,7 +33,7 @@ const show = async (req, res) => {
         res.status(500).json(err.message);
     }
 }
-const updateTask = async (req, res) => {
+const updateTaskStatus = async (req, res) => {
     try {
 
         const updatedtask = await Task.findByIdAndUpdate(req.params.taskId,
@@ -42,6 +42,21 @@ const updateTask = async (req, res) => {
         );
 
         res.status(200).json(updatedtask);
+    }
+    catch (err) {
+        res.status(500).json(err.message);
+    }
+}
+const updateTask = async (req, res) => {
+    try {
+
+        const task = await Task.findBy(req.params.taskId);
+        if (task.status.equals('todo'))
+            task.status = 'in-progress'
+        else task.status = 'completed'
+
+        await task.save()
+        res.status(200).json(task);
     }
     catch (err) {
         res.status(500).json(err.message);
@@ -59,4 +74,4 @@ const deleteTask = async (req, res) => {
         res.status(500).json(err.message);
     }
 }
-module.exports = { createTask, index, show, updateTask, deleteTask };
+module.exports = { createTask, index, show, updateTaskStatus, updateTask, deleteTask };

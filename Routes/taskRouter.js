@@ -7,6 +7,7 @@ const router = express.Router({ mergeParams: true });
 router.post('/', checkMembership, taskCtrl.createTask);
 router.get('/', checkMembership, taskCtrl.index);
 router.get('/:taskId', checkMembership, taskCtrl.show);
+router.patch('/:taskId', checkMembership, taskCtrl.updateTaskStatus);
 router.put('/:taskId', checkTaskOwner, taskCtrl.updateTask);
 router.delete('/:taskId', checkTaskOwner, taskCtrl.deleteTask);
 
