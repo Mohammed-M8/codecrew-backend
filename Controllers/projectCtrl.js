@@ -36,6 +36,7 @@ const index = async (req, res) => {
 const show = async (req, res) => {
     try {
         const project = await Project.findById(req.params.id).populate(['owner', 'members'])
+        if (!project) return res.status(404).json({ err: "Project not found" })
         res.status(200).json(project)
     } catch (error) {
         console.log(error)
@@ -60,4 +61,13 @@ const update = async (req, res) => {
     }
 }
 
-module.exports = { create, index, show, update }
+const deleteProject = async (req, res) => {
+    try {
+        await Project.findByIdAndDelete(req.params.id)
+        res.status(204).json()
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ err: error.message })
+    }
+}
+module.exports = { create, index, show, update, delete: deleteProject }

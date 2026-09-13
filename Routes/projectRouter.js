@@ -8,5 +8,5 @@ router.post('/',isSignedIn,projectCtrl.create)
 router.get('/',projectCtrl.index)
 router.get('/:id',projectCtrl.show)
 router.put('/:id',isSignedIn,isProjectOwner,projectCtrl.update)
-
+router.delete('/:id',isSignedIn,isProjectOwner,projectCtrl.delete)
 module.exports=router
