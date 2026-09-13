@@ -2,6 +2,7 @@ const JoinRequest = require('../Models/JoinRequest');
 const Project = require('../Models/project');
 
 
+// Get all join requests for one project
 const getProjectJoinRequests = async (req, res) => {
     try {
         const joinRequests = await JoinRequest.find({
@@ -15,6 +16,7 @@ const getProjectJoinRequests = async (req, res) => {
 };
 
 
+// Get all join requests made by one user
 const getUserJoinRequests = async (req, res) => {
     try {
         const joinRequests = await JoinRequest.find({
@@ -27,6 +29,8 @@ const getUserJoinRequests = async (req, res) => {
     }
 };
 
+
+// Create a new join request
 const createJoinRequest = async (req, res) => {
     try {
         const newJoinRequest = await JoinRequest.create({
@@ -43,6 +47,7 @@ const createJoinRequest = async (req, res) => {
 };
 
 
+// Accept or reject a join request
 const updateJoinRequest = async (req, res) => {
     try {
         const joinRequest = await JoinRequest.findById(req.params.id);
@@ -53,8 +58,15 @@ const updateJoinRequest = async (req, res) => {
             });
         }
 
+        // Accept request
         if (req.body.action === 'accept') {
             const project = await Project.findById(joinRequest.project);
+
+            if (!project) {
+                return res.status(404).json({
+                    err: 'Project not found'
+                });
+            }
 
             project.members.push({
                 user: joinRequest.requestor,
@@ -62,6 +74,8 @@ const updateJoinRequest = async (req, res) => {
             });
 
             await project.save();
+
+            // Delete request after accepting
             await JoinRequest.findByIdAndDelete(req.params.id);
 
             return res.status(200).json({
@@ -69,6 +83,7 @@ const updateJoinRequest = async (req, res) => {
             });
         }
 
+        // Reject request
         if (req.body.action === 'reject') {
             await JoinRequest.findByIdAndDelete(req.params.id);
 
@@ -86,6 +101,8 @@ const updateJoinRequest = async (req, res) => {
     }
 };
 
+
+// Cancel or withdraw a join request
 const cancelJoinRequest = async (req, res) => {
     try {
         const joinRequest = await JoinRequest.findById(req.params.id);
@@ -107,11 +124,11 @@ const cancelJoinRequest = async (req, res) => {
     }
 };
 
+
 module.exports = {
     getProjectJoinRequests,
     getUserJoinRequests,
     createJoinRequest,
     updateJoinRequest,
     cancelJoinRequest,
-
 };
