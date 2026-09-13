@@ -2,8 +2,10 @@ const Task = require('../Models/task');
 
 const createTask = async (req, res) => {
     try {
-        const newTask = await Task.create(req.body);
-        newTask._doc.createdBy = req.user;
+        const newTask = await Task.create({
+            ...req.body,
+            createdBy: req.user._id
+        });
 
         res.status(201).json(newTask);
     }
