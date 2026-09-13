@@ -70,4 +70,16 @@ const deleteProject = async (req, res) => {
         res.status(500).json({ err: error.message })
     }
 }
-module.exports = { create, index, show, update, delete: deleteProject }
+
+const getProjectMembers = async (req, res) => {
+    try {
+        const project = await Project.findById(req.params.id).populate('members')
+        if (!project) return res.status(404).json({ err: "Project not found" })
+        const members = project.members;
+        res.status(200).json(members)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ err: error.message })
+    }
+}
+module.exports = { create, index, show, update, delete: deleteProject,getProjectMembers }

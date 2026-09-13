@@ -9,4 +9,5 @@ router.get('/',projectCtrl.index)
 router.get('/:id',projectCtrl.show)
 router.put('/:id',isSignedIn,isProjectOwner,projectCtrl.update)
 router.delete('/:id',isSignedIn,isProjectOwner,projectCtrl.delete)
+router.get('/:id/members',projectCtrl.getProjectMembers)
 module.exports=router
