@@ -42,8 +42,52 @@ const createJoinRequest = async (req, res) => {
 };
 
 
+const updateJoinRequest = async (req, res) => {
+    try {
+        const joinRequest = await JoinRequest.findById(req.params.id);
+
+        if (!joinRequest) {
+            return res.status(404).json({
+                err: 'Join request not found'
+            });
+        }
+
+        if (req.body.action === 'accept') {
+            const project = await Project.findById(joinRequest.project);
+
+            project.members.push({
+                user: joinRequest.requestor,
+                role: joinRequest.role
+            });
+
+            await project.save();
+            await JoinRequest.findByIdAndDelete(req.params.id);
+
+            return res.status(200).json({
+                message: 'Join request accepted'
+            });
+        }
+
+        if (req.body.action === 'reject') {
+            await JoinRequest.findByIdAndDelete(req.params.id);
+
+            return res.status(200).json({
+                message: 'Join request rejected'
+            });
+        }
+
+        res.status(400).json({
+            err: 'Action must be accept or reject'
+        });
+
+    } catch (err) {
+        res.status(500).json({ err: err.message });
+    }
+};
+
 module.exports = {
     getProjectJoinRequests,
     getUserJoinRequests,
     createJoinRequest,
+    updateJoinRequest,
 };
