@@ -10,6 +10,8 @@ const path = require('path');
 
 const authRouter = require('./Routes/authRouter');
 const taskRouter = require('./Routes/taskRouter');
+const projectRouter=require('./Routes/projectRouter')
+
 const isSignedIn = require('./Middleware/isSignedIn');
 
 require('./config/database')
@@ -20,7 +22,7 @@ app.use(express.json());
 app.use(logger('dev'));
 
 app.use('/auth', authRouter)
-
+app.use('/projects',projectRouter)
 
 // only protected
 app.use(isSignedIn)
