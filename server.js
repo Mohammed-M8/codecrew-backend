@@ -24,7 +24,7 @@ app.use('/auth', authRouter)
 
 // only protected
 app.use(isSignedIn)
-app.use('/projects/projectId/tasks', taskRouter);
+app.use('/projects/:projectId/tasks', taskRouter);
 
 app.get('/protected', (req, res) => {
     try {
