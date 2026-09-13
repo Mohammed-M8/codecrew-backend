@@ -33,4 +33,15 @@ const show = async (req, res) => {
         res.status(500).json(err.message);
     }
 }
-module.exports = { createTask, index, show };
+const updateTask = async (req, res) => {
+    try {
+
+        const task = await Task.findByIdAndUpdate(req.params.taskId);
+
+        res.status(200).json(task);
+    }
+    catch (err) {
+        res.status(500).json(err.message);
+    }
+}
+module.exports = { createTask, index, show, updateTask };
