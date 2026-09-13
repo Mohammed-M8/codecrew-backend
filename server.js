@@ -1,30 +1,36 @@
 const dotenv = require('dotenv');
 dotenv.config();
+
 const express = require('express');
 const app = express();
+
 const cors = require('cors');
 const logger = require('morgan');
 const path = require('path');
 
-
-
 const authRouter = require('./Routes/authRouter');
+const userRouter = require('./Routes/userRouter');
+const projectRouter = require('./Routes/projectRouter');
 const taskRouter = require('./Routes/taskRouter');
 const joinRequestRouter = require('./Routes/joinRequestRouter');
+
 const isSignedIn = require('./Middleware/isSignedIn');
 
-require('./config/database')
+require('./config/database');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 app.use(express.json());
 app.use(logger('dev'));
 
-app.use('/auth', authRouter)
+// Public routes
+app.use('/auth', authRouter);
+app.use('/projects', projectRouter);
 
+// Protected routes
+app.use(isSignedIn);
 
-// only protected
-app.use(isSignedIn)
+app.use('/users/:userId', userRouter);
 app.use('/projects/:projectId/join-requests', joinRequestRouter);
 app.use('/projects/:projectId/tasks', taskRouter);
 
