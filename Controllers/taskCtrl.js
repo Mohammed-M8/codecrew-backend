@@ -11,9 +11,11 @@ const createTask = async (req, res) => {
         res.status(500).json(err.message);
     }
 }
-const getTask = async (req, res) => {
+const index = async (req, res) => {
     try {
-        const task = await Task.findById(req.params.taskId);
+        const task = await Task.find({ project: req.params.projectId })
+            .populate('project')
+            .sort({ dueDate: 'desc' });
 
         res.status(200).json(task);
     }
@@ -21,4 +23,14 @@ const getTask = async (req, res) => {
         res.status(500).json(err.message);
     }
 }
-module.exports = { createTask, getTask };
+const show = async (req, res) => {
+    try {
+        const task = await Task.findById(req.params.taskId).populate('project');
+
+        res.status(200).json(task);
+    }
+    catch (err) {
+        res.status(500).json(err.message);
+    }
+}
+module.exports = { createTask, index, show };

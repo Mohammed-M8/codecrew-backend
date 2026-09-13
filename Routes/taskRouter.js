@@ -3,7 +3,8 @@ const taskCtrl = require('../Controllers/taskCtrl');
 const router = express.Router({ mergeParams: true });
 
 router.post('/', taskCtrl.createTask);
-router.get('/:taskId', taskCtrl.getTask);
+router.get('/', taskCtrl.index);
+router.get('/:taskId', taskCtrl.show);
 
 
 module.exports = router;
