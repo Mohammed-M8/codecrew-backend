@@ -1,4 +1,5 @@
 const JoinRequest = require('../Models/JoinRequest');
+const Project = require('../Models/project');
 
 
 const getProjectJoinRequests = async (req, res) => {
@@ -85,9 +86,32 @@ const updateJoinRequest = async (req, res) => {
     }
 };
 
+const cancelJoinRequest = async (req, res) => {
+    try {
+        const joinRequest = await JoinRequest.findById(req.params.id);
+
+        if (!joinRequest) {
+            return res.status(404).json({
+                err: 'Join request not found'
+            });
+        }
+
+        await JoinRequest.findByIdAndDelete(req.params.id);
+
+        res.status(200).json({
+            message: 'Join request cancelled'
+        });
+
+    } catch (err) {
+        res.status(500).json({ err: err.message });
+    }
+};
+
 module.exports = {
     getProjectJoinRequests,
     getUserJoinRequests,
     createJoinRequest,
     updateJoinRequest,
+    cancelJoinRequest,
+
 };
