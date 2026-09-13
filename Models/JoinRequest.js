@@ -22,12 +22,7 @@ const joinRequestSchema = new mongoose.Schema(
     message: {
       type: String
     },
-    
-     status: {
-      type: String,
-      enum: ['pending', 'accepted', 'rejected'],
-      default: 'pending'
-    }
+
   },
   {
     timestamps: { createdAt: true, updatedAt: false }
