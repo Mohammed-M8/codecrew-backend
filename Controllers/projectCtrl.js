@@ -22,15 +22,25 @@ const create = async (req, res) => {
 
 }
 
-const index=async (req,res)=>{
+const index = async (req, res) => {
     try {
-        const projects=await Project.find().populate(['owner','members'])
+        const projects = await Project.find().populate(['owner', 'members'])
         res.status(200).json(projects)
     } catch (error) {
         console.log(error.message)
-        res.status(500).json({err:error.message})
+        res.status(500).json({ err: error.message })
 
     }
 }
 
-module.exports={create,index}
+const show = async (req, res) => {
+    try {
+        const project = await Project.findById(req.params.id).populate(['owner', 'members'])
+        res.status(200).json(project)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ err: error.message })
+    }
+}
+
+module.exports = { create, index,show }
