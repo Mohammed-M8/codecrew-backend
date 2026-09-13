@@ -3,6 +3,9 @@
 CodeCrew is a web-based platform where like-minded coders can lookup interesting projects that may require contributors or create a project idea and request members to help in bringing the project to life. This platform allows beginners to learn collaboration and trade skills with each other while also providing startup creatives to allow experienced developers provide help in the creation of their unique ideas.
 
 ## User Stories
+- As a guest and registerd user, I must be able to search for available projects and filter by technologies and sort by alphabetical order
+- As a signed-in user I must be able to create, update, delete, and view projects
+- As a signed-in user I must be able to request to join an available team within a project
 - As a signed-in user I must be able to accept/reject a join request made by another users
 - As a member of the team, I must be able to create, update, delete, and view tasks
 

@@ -9,6 +9,7 @@ const path = require('path');
 
 
 const authRouter = require('./Routes/authRouter');
+const taskRouter = require('./Routes/taskRouter');
 const isSignedIn = require('./Middleware/isSignedIn');
 
 require('./config/database')
@@ -23,6 +24,7 @@ app.use('/auth', authRouter)
 
 // only protected
 app.use(isSignedIn)
+app.use('/projects/:projectId/tasks', taskRouter);
 
 app.get('/protected', (req, res) => {
     try {
