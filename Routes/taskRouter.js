@@ -8,6 +8,8 @@ router.post('/', checkMembership, taskCtrl.createTask);
 router.get('/', checkMembership, taskCtrl.index);
 router.get('/:taskId', checkMembership, taskCtrl.show);
 router.put('/:taskId', checkTaskOwner, taskCtrl.updateTask);
+router.delete('/:taskId', checkTaskOwner, taskCtrl.deleteTask);
+
 
 
 module.exports = router;
