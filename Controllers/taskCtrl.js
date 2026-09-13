@@ -17,7 +17,7 @@ const index = async (req, res) => {
     try {
         const task = await Task.find({ project: req.params.projectId })
             .populate('project')
-            .sort({ dueDate: 'desc' });
+            .sort({ dueDate: 1 });
 
         if (!task) {
             res.status(404).json("this task doesn't exist");
@@ -59,8 +59,8 @@ const updateTask = async (req, res) => {
 const updateTaskStatus = async (req, res) => {
     try {
 
-        const task = await Task.findBy(req.params.taskId);
-        if (task.status.equals('todo'))
+        const task = await Task.findById(req.params.taskId);
+        if (task.status === 'todo')
             task.status = 'in-progress'
         else task.status = 'completed'
 
