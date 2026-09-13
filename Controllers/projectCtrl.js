@@ -43,4 +43,21 @@ const show = async (req, res) => {
     }
 }
 
-module.exports = { create, index,show }
+const update = async (req, res) => {
+    try {
+        const { title, description, technologies, requiredRoles, status } = req.body;
+
+        const project = await Project.findByIdAndUpdate(
+            req.params.id,
+            { title, description, technologies, requiredRoles, status },
+            { new: true, runValidators: true }
+        );
+        if (!project) return res.status(404).json({ err: "Project not found" })
+        res.status(200).json(project)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ err: error.message })
+    }
+}
+
+module.exports = { create, index, show, update }
