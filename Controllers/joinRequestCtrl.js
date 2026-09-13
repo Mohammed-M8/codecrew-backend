@@ -26,8 +26,24 @@ const getUserJoinRequests = async (req, res) => {
     }
 };
 
+const createJoinRequest = async (req, res) => {
+    try {
+        const newJoinRequest = await JoinRequest.create({
+            project: req.params.projectId,
+            requestor: req.user._id,
+            role: req.body.role,
+            message: req.body.message
+        });
+
+        res.status(201).json(newJoinRequest);
+    } catch (err) {
+        res.status(500).json({ err: err.message });
+    }
+};
+
 
 module.exports = {
     getProjectJoinRequests,
     getUserJoinRequests,
+    createJoinRequest,
 };
