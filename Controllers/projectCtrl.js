@@ -24,12 +24,27 @@ const create = async (req, res) => {
 
 const index = async (req, res) => {
     try {
-        const projects = await Project.find({status:"open"}).populate(['owner', 'members'])
+        const projects = await Project.find({ status: "open" }).populate(['owner', 'members'])
         res.status(200).json(projects)
     } catch (error) {
         console.log(error.message)
         res.status(500).json({ err: error.message })
 
+    }
+}
+
+const getUsersProjects = async (req, res) => {
+    try {
+        const projects = await Project.find({
+            $or: [
+                { owner: req.user._id }, { 'members.user': req.user._id }
+            ]
+        }).populate(['owner', 'members.user'])
+
+        res.status(200).json(projects)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ err: error.message })
     }
 }
 
@@ -101,4 +116,4 @@ const deleteMember = async (req, res) => {
         res.status(500).json({ err: error.message });
     }
 };
-module.exports = { create, index, show, update, delete: deleteProject, getProjectMembers,deleteMember }
+module.exports = { create, index, show, update, delete: deleteProject, getProjectMembers, deleteMember, getUsersProjects }
