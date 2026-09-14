@@ -31,7 +31,8 @@ const index = async (req, res) => {
 }
 const show = async (req, res) => {
     try {
-        const task = await Task.findById(req.params.taskId).populate('project');
+        const task = await Task.findById(req.params.taskId).populate('project')
+            .populate('assignedTo');
 
         if (!task) {
             res.status(404).json("this task doesn't exist");
@@ -59,7 +60,8 @@ const updateTask = async (req, res) => {
 const updateTaskStatus = async (req, res) => {
     try {
 
-        const task = await Task.findById(req.params.taskId).populate('project');
+        const task = await Task.findById(req.params.taskId).populate('project')
+            .populate('assignedTo');
         if (task.status === 'todo')
             task.status = 'in-progress'
         else task.status = 'completed'
