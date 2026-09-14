@@ -17,6 +17,7 @@ const index = async (req, res) => {
     try {
         const task = await Task.find({ project: req.params.projectId })
             .populate('project')
+            .populate('assignedTo')
             .sort({ dueDate: 1 });
 
         if (!task) {
@@ -49,7 +50,9 @@ const updateTask = async (req, res) => {
         const updatedtask = await Task.findByIdAndUpdate(req.params.taskId,
             req.body,
             { new: true }
-        );
+        ).populate('project')
+            .populate('assignedTo');
+
 
         res.status(200).json(updatedtask);
     }
