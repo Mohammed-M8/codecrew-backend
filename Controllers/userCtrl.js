@@ -9,7 +9,8 @@ const activity = async (req, res) => {
             project: { $in: projectIds }
             , assignedTo: req.user._id,
             status: { $in: ['todo', 'in-progress'] }
-        }).populate('project');
+        }).populate('project')
+            .populate('assignedTo');
         res.status(200).json(tasks)
 
     }
