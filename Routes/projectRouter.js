@@ -6,10 +6,10 @@ const router=express.Router({mergeParams:true})
 
 router.post('/',isSignedIn,projectCtrl.create)
 router.get('/',projectCtrl.index)
+router.get('/me',isSignedIn,projectCtrl.getUsersProjects)
 router.get('/:projectId',projectCtrl.show)
 router.put('/:projectId',isSignedIn,isProjectOwner,projectCtrl.update)
 router.delete('/:projectId',isSignedIn,isProjectOwner,projectCtrl.delete)
 router.get('/:projectId/members',projectCtrl.getProjectMembers)
 router.delete('/:projectId/members/:memberId',isSignedIn,isProjectOwner,projectCtrl.deleteMember)
-
 module.exports=router
