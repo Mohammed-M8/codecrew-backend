@@ -62,6 +62,14 @@ const updateTaskStatus = async (req, res) => {
 
         const task = await Task.findById(req.params.taskId).populate('project')
             .populate('assignedTo');
+
+        const isMember = task.assignedTo.some((member) =>
+            member.user.toString() === req.user._id)
+
+        if (!isMember) {
+            res.status(403).json('You are not authorized to edit this task')
+        }
+
         if (task.status === 'todo')
             task.status = 'in-progress'
         else task.status = 'completed'
