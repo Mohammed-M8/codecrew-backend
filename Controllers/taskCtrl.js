@@ -59,7 +59,7 @@ const updateTask = async (req, res) => {
 const updateTaskStatus = async (req, res) => {
     try {
 
-        const task = await Task.findById(req.params.taskId);
+        const task = await Task.findById(req.params.taskId).populate('project');
         if (task.status === 'todo')
             task.status = 'in-progress'
         else task.status = 'completed'
