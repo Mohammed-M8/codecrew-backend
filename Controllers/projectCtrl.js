@@ -7,7 +7,12 @@ const create = async (req, res) => {
     try {
 
         req.body.owner = req.user._id;
-
+        if (!req.body.requiredRoles || req.body.requiredRoles.length === 0) {
+            return res.status(400).json({ err: 'At least one required role is needed.' });
+        }
+        if (!req.body.technologies || req.body.technologies.length === 0) {
+            return res.status(400).json({ err: 'At least one technology is required' })
+        }
         const project = await Project.create(req.body)
 
         res.status(201).json(project)
