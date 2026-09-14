@@ -7,7 +7,7 @@ const getProjectJoinRequests = async (req, res) => {
     try {
         const joinRequests = await JoinRequest.find({
             project: req.params.projectId
-        });
+        }).populate('requestor', 'username');
 
         res.status(200).json(joinRequests);
     } catch (err) {
