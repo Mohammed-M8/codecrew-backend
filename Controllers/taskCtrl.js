@@ -67,7 +67,7 @@ const updateTaskStatus = async (req, res) => {
             .populate('assignedTo');
 
         const isMember = task.assignedTo.some((member) =>
-            member.user.toString() === req.user._id)
+            member._id.toString() === req.user._id.toString())
 
         if (!isMember) {
             res.status(403).json('You are not authorized to edit this task')
