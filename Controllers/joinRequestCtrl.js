@@ -16,6 +16,28 @@ const getProjectJoinRequests = async (req, res) => {
 };
 
 
+// Get all join requests for projects owned by the logged-in user
+const getOwnerJoinRequests = async (req, res) => {
+    try {
+        const projects = await Project.find({
+            owner: req.user._id
+        });
+
+        const projectIds = projects.map((project) => project._id);
+
+        const joinRequests = await JoinRequest.find({
+            project: { $in: projectIds }
+        })
+            .populate('requestor', 'username')
+            .populate('project', 'title');
+
+        res.status(200).json(joinRequests);
+    } catch (err) {
+        res.status(500).json({ err: err.message });
+    }
+};
+
+
 // Get all join requests made by one user
 const getUserJoinRequests = async (req, res) => {
     try {
@@ -127,6 +149,7 @@ const cancelJoinRequest = async (req, res) => {
 
 module.exports = {
     getProjectJoinRequests,
+    getOwnerJoinRequests,
     getUserJoinRequests,
     createJoinRequest,
     updateJoinRequest,
