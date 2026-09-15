@@ -4,13 +4,15 @@ const createTask = async (req, res) => {
     try {
         const newTask = await Task.create({
             ...req.body,
+            project: req.params.projectId,
             createdBy: req.user._id
         });
 
         res.status(201).json(newTask);
     }
     catch (err) {
-        res.status(500).json(err.message);
+        console.log(err.message)
+        return res.status(500).json(err.message);
     }
 }
 const index = async (req, res) => {
@@ -27,7 +29,7 @@ const index = async (req, res) => {
         res.status(200).json(task);
     }
     catch (err) {
-        res.status(500).json(err.message);
+        return res.status(500).json(err.message);
     }
 }
 const show = async (req, res) => {
@@ -41,7 +43,7 @@ const show = async (req, res) => {
         res.status(200).json(task);
     }
     catch (err) {
-        res.status(500).json(err.message);
+        return res.status(500).json(err.message);
     }
 }
 const updateTask = async (req, res) => {
@@ -57,7 +59,7 @@ const updateTask = async (req, res) => {
         res.status(200).json(updatedtask);
     }
     catch (err) {
-        res.status(500).json(err.message);
+        return res.status(500).json(err.message);
     }
 }
 const updateTaskStatus = async (req, res) => {
@@ -81,7 +83,7 @@ const updateTaskStatus = async (req, res) => {
         res.status(200).json(task);
     }
     catch (err) {
-        res.status(500).json(err.message);
+        return res.status(500).json(err.message);
     }
 }
 
@@ -93,7 +95,7 @@ const deleteTask = async (req, res) => {
         res.status(200).json(deletedtask);
     }
     catch (err) {
-        res.status(500).json(err.message);
+        return res.status(500).json(err.message);
     }
 }
 module.exports = { createTask, index, show, updateTaskStatus, updateTask, deleteTask };
