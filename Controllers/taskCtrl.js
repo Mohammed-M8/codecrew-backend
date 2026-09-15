@@ -15,7 +15,7 @@ const createTask = async (req, res) => {
 }
 const index = async (req, res) => {
     try {
-        const task = await Task.findById(req.params.projectId)
+        const task = await Task.find({ project: req.params.projectId })
             .populate('project')
             .populate('assignedTo')
             .sort({ dueDate: 1 });
