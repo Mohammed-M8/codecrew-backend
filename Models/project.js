@@ -42,12 +42,23 @@ const projectSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ['open', 'closed'],
-        default:'open',
+        default: 'open',
         required: true
     },
 }, {
     timestamps: true
 })
 
-const Project= mongoose.model('Project',projectSchema)
-module.exports=Project;
+projectSchema.pre('findOneAndDelete', async function () {
+    const projectId = this.getQuery()._id;
+    const Task = mongoose.model('Task');
+    const JoinRequest = mongoose.model('JoinRequest');
+
+    await Promise.all([
+        Task.deleteMany({ project: projectId }),
+        JoinRequest.deleteMany({ project: projectId }),
+    ]);
+});
+
+const Project = mongoose.model('Project', projectSchema)
+module.exports = Project;
