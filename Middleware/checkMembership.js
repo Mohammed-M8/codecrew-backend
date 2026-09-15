@@ -7,7 +7,7 @@ const checkMembership = async (req, res, next) => {
         member.user.toString() === req.user._id)
 
     if (!isMember) {
-        res.status(403).json('You are not authorized to be in this project')
+        return res.status(403).json('You are not authorized to be in this project')
     }
     next();
 }
