@@ -29,7 +29,16 @@ const create = async (req, res) => {
 
 const index = async (req, res) => {
     try {
-        const projects = await Project.find({ status: "open" }).populate(['owner', 'members'])
+        const {search}=req.query;
+        let query = { status: "open" };
+
+        if (search) {
+            query.title = {
+                $regex: search,
+                $options: 'i'
+            };
+        }
+        const projects = await Project.find(query).populate(['owner', 'members.user'])
         res.status(200).json(projects)
     } catch (error) {
         console.log(error.message)
