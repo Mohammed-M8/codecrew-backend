@@ -52,9 +52,49 @@ const getUserJoinRequests = async (req, res) => {
 };
 
 
-// Create a new join request
 const createJoinRequest = async (req, res) => {
     try {
+        // Find the project
+        const project = await Project.findById(req.params.projectId);
+
+        // Check if project exists
+        if (!project) {
+            return res.status(404).json({
+                err: 'Project not found'
+            });
+        }
+
+        // Prevent the owner from joining their own project
+        if (project.owner.toString() === req.user._id.toString()) {
+            return res.status(400).json({
+                err: 'You cannot join your own project'
+            });
+        }
+
+        // Check if the user is already a member
+        const isMember = project.members.some(
+            (member) => member.user.toString() === req.user._id.toString()
+        );
+
+        if (isMember) {
+            return res.status(400).json({
+                err: 'You are already a member of this project'
+            });
+        }
+
+        // Check if the user already sent a join request
+        const existingRequest = await JoinRequest.findOne({
+            project: req.params.projectId,
+            requestor: req.user._id
+        });
+
+        if (existingRequest) {
+            return res.status(400).json({
+                err: 'You already sent a join request'
+            });
+        }
+
+        // Create the join request
         const newJoinRequest = await JoinRequest.create({
             project: req.params.projectId,
             requestor: req.user._id,
@@ -63,8 +103,11 @@ const createJoinRequest = async (req, res) => {
         });
 
         res.status(201).json(newJoinRequest);
+
     } catch (err) {
-        res.status(500).json({ err: err.message });
+        res.status(500).json({
+            err: err.message
+        });
     }
 };
 
