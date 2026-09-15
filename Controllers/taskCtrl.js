@@ -15,13 +15,13 @@ const createTask = async (req, res) => {
 }
 const index = async (req, res) => {
     try {
-        const task = await Task.find({ project: req.params.projectId })
+        const task = await Task.findById(req.params.projectId)
             .populate('project')
             .populate('assignedTo')
             .sort({ dueDate: 1 });
 
         if (!task) {
-            res.status(404).json("this task doesn't exist");
+            return res.status(404).json("this task doesn't exist");
         }
 
         res.status(200).json(task);
@@ -36,7 +36,7 @@ const show = async (req, res) => {
             .populate('assignedTo');
 
         if (!task) {
-            res.status(404).json("this task doesn't exist");
+            return res.status(404).json("this task doesn't exist");
         }
         res.status(200).json(task);
     }
@@ -70,7 +70,7 @@ const updateTaskStatus = async (req, res) => {
             member._id.toString() === req.user._id.toString())
 
         if (!isMember) {
-            res.status(403).json('You are not authorized to edit this task')
+            return res.status(403).json('You are not authorized to edit this task')
         }
 
         if (task.status === 'todo')
