@@ -42,8 +42,8 @@ const getOwnerJoinRequests = async (req, res) => {
 const getUserJoinRequests = async (req, res) => {
     try {
         const joinRequests = await JoinRequest.find({
-            requestor: req.params.userId
-        });
+            requestor: req.user._id
+        }).populate('project', 'title');;
 
         res.status(200).json(joinRequests);
     } catch (err) {
