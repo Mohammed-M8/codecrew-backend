@@ -10,7 +10,8 @@ const activity = async (req, res) => {
             , assignedTo: req.user._id,
             status: { $in: ['todo', 'in-progress'] }
         }).populate('project')
-            .populate('assignedTo');
+            .populate('assignedTo')
+            .sort({ dueDate: 1 });
         res.status(200).json(tasks)
 
     }
