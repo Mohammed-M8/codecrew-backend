@@ -115,9 +115,9 @@ const getProjectMembers = async (req, res) => {
 
 const deleteMember = async (req, res) => {
     try {
-        const project = await Project.findById(req.params.projectId);
+        const project = await Project.findById(req.params.projectId).populate('owner');
         if (!project) return res.status(404).json({ err: "Project not found" });
-
+        if (project.owner._id.toString()===req.params.memberId) return res.status(400).json({err:"You cannot delete the Owner from the Project"})
         project.members = project.members.filter(
             m => m.user.toString() !== req.params.memberId
         );
