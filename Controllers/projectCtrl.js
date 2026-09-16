@@ -29,7 +29,11 @@ const create = async (req, res) => {
 
 const index = async (req, res) => {
     try {
-        const {search}=req.query;
+        const { search, page = 1, limit = 10 } = req.query;
+        const pageNum = parseInt(page);
+        const limitNum = parseInt(limit);
+        const skip = (pageNum - 1) * limitNum;
+
         let query = { status: "open" };
 
         if (search) {
@@ -38,24 +42,54 @@ const index = async (req, res) => {
                 $options: 'i'
             };
         }
-        const projects = await Project.find(query).populate(['owner', 'members.user'])
-        res.status(200).json(projects)
+
+        const [projects, total] = await Promise.all([
+            Project.find(query)
+                .populate(['owner', 'members.user'])
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limitNum),
+            Project.countDocuments(query)
+        ]);
+
+        res.status(200).json({
+            projects,
+            totalPages: Math.ceil(total / limitNum),
+            currentPage: pageNum
+        });
     } catch (error) {
         console.log(error.message)
         res.status(500).json({ err: error.message })
-
     }
 }
 
 const getUsersProjects = async (req, res) => {
     try {
-        const projects = await Project.find({
+        const { page = 1, limit = 10 } = req.query;
+        const pageNum = parseInt(page);
+        const limitNum = parseInt(limit);
+        const skip = (pageNum - 1) * limitNum;
+
+        const filter = {
             $or: [
                 { owner: req.user._id }, { 'members.user': req.user._id }
             ]
-        }).populate(['owner', 'members.user'])
+        };
 
-        res.status(200).json(projects)
+        const [projects, total] = await Promise.all([
+            Project.find(filter)
+                .populate(['owner', 'members.user'])
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limitNum),
+            Project.countDocuments(filter)
+        ]);
+
+        res.status(200).json({
+            projects,
+            totalPages: Math.ceil(total / limitNum),
+            currentPage: pageNum
+        });
     } catch (error) {
         console.log(error)
         res.status(500).json({ err: error.message })
@@ -117,7 +151,7 @@ const deleteMember = async (req, res) => {
     try {
         const project = await Project.findById(req.params.projectId).populate('owner');
         if (!project) return res.status(404).json({ err: "Project not found" });
-        if (project.owner._id.toString()===req.params.memberId) return res.status(400).json({err:"You cannot delete the Owner from the Project"})
+        if (project.owner._id.toString() === req.params.memberId) return res.status(400).json({ err: "You cannot delete the Owner from the Project" })
         project.members = project.members.filter(
             m => m.user.toString() !== req.params.memberId
         );
